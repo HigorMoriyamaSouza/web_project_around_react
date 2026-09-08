@@ -1,50 +1,40 @@
-import './index.css'
-import logo from './images/logo.svg'
-import avatar from './images/avatar.jpg'
+import avatar from '../../images/avatar.jpg'
 
-function App() {
-  return (
-    <>
-      <div className="page__content">
-        <header className="header page__section">
-          <img
-            alt="Logo Around The U.S."
-            className="logo header__logo"
-            src={logo}
-          />
-        </header>
-
+export default function Main() {
+    return(
         <main className="content">
+
+          /*
+           * Profile Section
+          */
           <section className="profile page__section">
             <div className="profile__image-container">
               <img className="profile__image" src={avatar} alt="Avatar" />
             </div>
+
             <div className="profile__info">
               <h1 className="profile__title">Custeau</h1>
               <button
-                aria-label="Editar perfil"
+                aria-label="Edit profile"
                 className="profile__edit-button"
                 type="button"
               ></button>
               <p className="profile__description">Explorer</p>
             </div>
-              <button
-                aria-label="Adicionar cartão"
+
+            <button
+                aria-label="Add card"
                 className="profile__add-button"
                 type="button"
-              ></button>
+            ></button>
           </section>
+
+          /*
+           * Cards Section
+          */
           <section className="cards page__section">
             <ul className="cards__list"></ul>
           </section>
         </main>
-
-        <footer className="footer page__section">
-          <p className="footer__copyright">© 2026 Around The U.S.</p>
-        </footer>
-      </div>
-    </>
-  )
+    );
 }
-
-export default App
