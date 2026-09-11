@@ -11,8 +11,9 @@ export default function Main() {
 
     //Popups:
     const newCardPopup = { title: "New card", children: <NewCard /> };
-    const editProfilePopup = { title: "Edit Profile", children: <EditProfile />};
-    const editAvatarPopup = { title: "Edit Avatar", children: <EditAvatar />};
+    const editProfilePopup = { title: "Edit Profile", children: <EditProfile /> };
+    const editAvatarPopup = { title: "Edit Avatar", children: <EditAvatar /> };
+    
 
     //Popups Open/Close functions:
     const handleOpenPopup = popup => setPopup(popup);
@@ -75,7 +76,7 @@ export default function Main() {
             <ul className="cards__list">
                 {
                     //Cards Rendering 
-                    cards.map(card => <Card Key={card._id} card={card} />)
+                    cards.map(card => <Card key={card._id} card={card} onOpen={handleOpenPopup}/>)
                 }
             </ul>
           </section>
