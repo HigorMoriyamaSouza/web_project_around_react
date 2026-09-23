@@ -27,7 +27,7 @@ class Api {
 
         const jsonResponse = await response.json();
 
-        console.log("Transaction Succeded: ", jsonResponse);
+        // console.log("Transaction Succeded: ", jsonResponse);
         
         return jsonResponse;
     }

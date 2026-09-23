@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import avatar from '../../images/avatar.jpg'
+import { useEffect, useState, useContext } from 'react'
 import Popup from './components/Popup/Popup'
 import NewCard from './components/Popup/components/NewCard/NewCard'
 import EditProfile from './components/Popup/components/EditProfile/EditProfile'
@@ -7,6 +6,7 @@ import EditAvatar from './components/Popup/components/EditAvatar/EditAvatar'
 import Card from './components/Card/Card'
 
 import { api } from '../../utils/api.js'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js'
 
 export default function Main() {
     const [popup, setPopup] = useState(null);
@@ -21,10 +21,13 @@ export default function Main() {
     const handleClosePopup = () => setPopup(null);
 
     //Handles Cards loading:
-    const [ cards, setCards ] = useState([]);
+    const [cards, setCards] = useState([]);
     useEffect(() => {
       api.getCards().then(cardsData => setCards(cardsData));
     }, [] );
+
+    //Recovers user data from context: 
+    const currentUser = useContext(CurrentUserContext);
 
     return(
         <main className="content">
@@ -34,18 +37,18 @@ export default function Main() {
           }
           <section className="profile page__section">
             <div className="profile__image-container" onClick={() => handleOpenPopup(editAvatarPopup)}>
-              <img className="profile__image" src={avatar} alt="Avatar" />
+              <img className="profile__image" src={currentUser.avatar} alt="Avatar" />
             </div>
 
             <div className="profile__info">
-              <h1 className="profile__title">Custeau</h1>
+              <h1 className="profile__title">{currentUser.name}</h1>
               <button
                 aria-label="Edit profile"
                 className="profile__edit-button"
                 type="button"
                 onClick={() => handleOpenPopup(editProfilePopup)}
               />
-              <p className="profile__description">Explorer</p>
+              <p className="profile__description">{currentUser.about}</p>
             </div>
 
             <button

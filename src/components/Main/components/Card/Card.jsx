@@ -1,13 +1,19 @@
 /*
  * Card Component.
 */
-import CardImage from "../Popup/components/CardImage/CardImage"
+import CardImage from '../Popup/components/CardImage/CardImage'
 
 export default function Card(props) {
     const { name, link, isLiked } = props.card;
     const { onOpen } = props;
 
     const imageComponent = { title: null, children: <CardImage card={props.card} /> };
+
+    const cardLikeButtonClassName = `card__like-button ${
+        isLiked 
+            ? 'card__like-button_is-active' 
+            : ''
+    }`;
 
     return(
         <li className="card">
@@ -33,7 +39,7 @@ export default function Card(props) {
                 <h2 className="card__title">{name}</h2>
                 <button
                     aria-label="Like card"
-                    className="card__like-button"
+                    className={cardLikeButtonClassName}
                     type="button"
                 />
             </div>
