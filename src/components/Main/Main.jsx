@@ -9,9 +9,9 @@ import { api } from '../../utils/api.js'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js'
 
 export default function Main() {
-    const [popup, setPopup] = useState(null);
-
+  
     //Popups:
+    const [popup, setPopup] = useState(null);
     const newCardPopup = { title: "New card", children: <NewCard /> };
     const editProfilePopup = { title: "Edit Profile", children: <EditProfile /> };
     const editAvatarPopup = { title: "Edit Avatar", children: <EditAvatar /> };
@@ -20,11 +20,28 @@ export default function Main() {
     const handleOpenPopup = popup => setPopup(popup);
     const handleClosePopup = () => setPopup(null);
 
-    //Handles Cards loading:
+    //Handles Cards:
     const [cards, setCards] = useState([]);
-    useEffect(() => {
-      api.getCards().then(cardsData => setCards(cardsData));
-    }, [] );
+    const handlesCardsLoad = () => api.getCards().then(cardsData => setCards(cardsData));
+    useEffect(() => { handlesCardsLoad() }, [] );
+
+    async function handleCardLike(cardId, isLiked) {
+        try{
+            isLiked
+              ? await api.dislikeCard(cardId) && handlesCardsLoad()
+              : await api.likeCard(cardId) && handlesCardsLoad()
+        } catch (error) {
+            console.log("Error while interacting with the card: ", error);
+        }
+    } 
+
+    async function handleCardDelete(cardId) {
+      try{
+          await api.deleteCard(cardId) && handlesCardsLoad();
+      } catch (error) {
+          console.log("Error while deleting card: ", error);
+      }
+    }
 
     //Recovers user data from context: 
     const currentUser = useContext(CurrentUserContext);
@@ -66,7 +83,13 @@ export default function Main() {
             <ul className="cards__list">
                 {
                     //Cards Rendering 
-                    cards.map(card => <Card key={card._id} card={card} onOpen={handleOpenPopup}/>)
+                    cards.map(card => <Card 
+                                        key={card._id} 
+                                        card={card} 
+                                        onOpen={handleOpenPopup}
+                                        onCardLike={handleCardLike}
+                                        onCardDelete={handleCardDelete}
+                                      />)
                 }
             </ul>
           </section>
