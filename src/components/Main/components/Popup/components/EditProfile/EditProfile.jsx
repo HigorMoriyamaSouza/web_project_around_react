@@ -1,12 +1,27 @@
+import { useState, useContext } from "react";
+import { CurrentUserContext } from "../../../../../../contexts/CurrentUserContext";
+
 /*
  * Profile Edition Popup Component.
 */
 export default function EditProfile() {
+    const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
+    const [name, setName] = useState(currentUser.name);
+    const [description, setDescription] = useState(currentUser.about);
+
+    const handleNameChange = event => setName(event.target.value);
+    const handleDescriptionChange = event => setDescription(event.target.value);
+    const handleSubmit = event => {
+        event.preventDefault();
+        handleUpdateUser(name, description);
+    }
+
     return(
         <form 
             className="popup__form" 
             name="card-form"
             id="edit-profile-form"
+            onSubmit = {handleSubmit}
         >
             {
                 //Profile Name Field
@@ -21,6 +36,8 @@ export default function EditProfile() {
                     placeholder="Name"
                     required
                     type="text"
+                    value={name}
+                    onChange={handleNameChange}
                 />
                 <span className="popup__input-error name-input-error"></span>
             </label>
@@ -38,6 +55,8 @@ export default function EditProfile() {
                     placeholder="About me"
                     required
                     type="text"
+                    value={description}
+                    onChange={handleDescriptionChange}
                 />
                 <span className="popup__input-error description-input-error"></span>
             </label>
