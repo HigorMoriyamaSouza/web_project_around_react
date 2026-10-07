@@ -1,12 +1,26 @@
+import { useState, useContext } from "react"
+import { CurrentUserContext } from "../../../../../../contexts/CurrentUserContext";
+
 /*
  * Avatar Edition Popup Component.
 */
 export default function EditAvatar() {
+    const { currentUser, handleUpdateAvatar } = useContext(CurrentUserContext);
+    const [avatar, setAvatar] = useState(currentUser.avatar);
+    
+    const handleAvatarChange = event => setAvatar(event.target.value); 
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        handleUpdateAvatar(avatar);
+    }
+
     return(
         <form 
             className="popup__form" 
             name="avatar-form"
             id="edit-avatar-form"  
+            onSubmit={handleSubmit}
         >
             
             {
@@ -20,6 +34,8 @@ export default function EditAvatar() {
                     placeholder="Avatar link"
                     required
                     type="url"
+                    value={avatar}
+                    onChange={handleAvatarChange}
                 />
                 <span className="popup__input-error link-input-error"></span>
             </label>

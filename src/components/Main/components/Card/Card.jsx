@@ -1,13 +1,19 @@
 /*
  * Card Component.
 */
-import CardImage from "../Popup/components/CardImage/CardImage"
+import CardImage from '../Popup/components/CardImage/CardImage'
 
 export default function Card(props) {
-    const { name, link, isLiked } = props.card;
-    const { onOpen } = props;
+    const { _id, name, link, isLiked } = props.card;
+    const { onOpen, onCardLike, onCardDelete } = props;
 
     const imageComponent = { title: null, children: <CardImage card={props.card} /> };
+
+    const cardLikeButtonClassName = `card__like-button ${
+        isLiked 
+            ? 'card__like-button_is-active' 
+            : ''
+    }`;
 
     return(
         <li className="card">
@@ -24,6 +30,7 @@ export default function Card(props) {
                 aria-label="Delete Card"
                 className="card__delete-button"
                 type="button"
+                onClick={() => onCardDelete(_id)}
             />
 
             {
@@ -33,8 +40,9 @@ export default function Card(props) {
                 <h2 className="card__title">{name}</h2>
                 <button
                     aria-label="Like card"
-                    className="card__like-button"
+                    className={cardLikeButtonClassName}
                     type="button"
+                    onClick={() => onCardLike(_id, isLiked)}
                 />
             </div>
         </li>
