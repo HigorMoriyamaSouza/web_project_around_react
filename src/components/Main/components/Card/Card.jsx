@@ -1,7 +1,7 @@
 /*
  * Card Component.
 */
-import CardImage from '../Popup/components/CardImage/CardImage'
+import CardImage from '../Popup/components/ImagePopup/ImagePopup'
 
 export default function Card(props) {
     const { _id, name, link, isLiked } = props.card;
