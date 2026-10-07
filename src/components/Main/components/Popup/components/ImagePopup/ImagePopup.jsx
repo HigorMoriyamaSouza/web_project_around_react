@@ -1,7 +1,7 @@
 /*
  * Card Image Popup Component.
 */
-export default function CardImage(props) {
+export default function ImagePopup(props) {
     const { link, name } = props.card;
 
     return(
