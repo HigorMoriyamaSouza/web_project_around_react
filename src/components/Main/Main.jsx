@@ -1,42 +1,17 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext } from 'react'
 import Popup from './components/Popup/Popup'
+import Card from './components/Card/Card'
 import NewCard from './components/Popup/components/NewCard/NewCard'
 import EditProfile from './components/Popup/components/EditProfile/EditProfile'
 import EditAvatar from './components/Popup/components/EditAvatar/EditAvatar'
-import Card from './components/Card/Card'
-
-import { api } from '../../utils/api.js'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js'
 
 export default function Main(props) {
   
     //Popups:
-    const newCardPopup = { title: "New card", children: <NewCard /> };
+    const newCardPopup = { title: "New card", children: <NewCard onAddPlaceSubmit={props.onAddPlaceSubmit} /> };
     const editProfilePopup = { title: "Edit Profile", children: <EditProfile /> };
     const editAvatarPopup = { title: "Edit Avatar", children: <EditAvatar /> };
-    
-    //Handles Cards:
-    const [cards, setCards] = useState([]);
-    const handlesCardsLoad = () => api.getCards().then(cardsData => setCards(cardsData));
-    useEffect(() => { handlesCardsLoad() }, [] );
-
-    async function handleCardLike(cardId, isLiked) {
-        try{
-            isLiked
-              ? await api.dislikeCard(cardId) && handlesCardsLoad()
-              : await api.likeCard(cardId) && handlesCardsLoad()
-        } catch (error) {
-            console.log("Error while interacting with the card: ", error);
-        }
-    } 
-
-    async function handleCardDelete(cardId) {
-      try{
-          await api.deleteCard(cardId) && handlesCardsLoad();
-      } catch (error) {
-          console.log("Error while deleting card: ", error);
-      }
-    }
 
     //Recovers user data from context: 
     const { currentUser } = useContext(CurrentUserContext);
@@ -78,12 +53,12 @@ export default function Main(props) {
             <ul className="cards__list">
                 {
                     //Cards Rendering 
-                    cards.map(card => <Card 
+                    props.cards.map(card => <Card 
                                         key={card._id} 
                                         card={card} 
                                         onOpen={props.onOpenPopup}
-                                        onCardLike={handleCardLike}
-                                        onCardDelete={handleCardDelete}
+                                        onCardLike={props.onCardLike}
+                                        onCardDelete={props.onCardDelete}
                                       />)
                 }
             </ul>
